@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net472</TargetFramework>
+    <UseWindowsForms>true</UseWindowsForms>
+    <RootNamespace>GTAModManager</RootNamespace>
+    <AssemblyName>GTAModManager</AssemblyName>
+    <StartupObject>GTAModManager.Program</StartupObject>
+    <Authors>ModManager</Authors>
+    <Product>GTA 3 Mod Manager</Product>
+    <Description>A simple mod manager for GTA 3</Description>
+    <Version>1.0.0</Version>
+    <!-- <ApplicationIcon>256x256.ico</ApplicationIcon> -->
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.IO.Compression.FileSystem" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="256x256.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+</Project> 
