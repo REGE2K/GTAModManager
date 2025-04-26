@@ -1,67 +1,68 @@
-# GTA 3 Mod Manager
+# 🎮 GTA Mod Manager
 
-Un program simplu pentru instalarea si gestionarea modurilor pentru GTA 3.
+A powerful and user-friendly tool for managing mods for Grand Theft Auto games.
 
-## Functionalitati
+## ✨ Features
 
-- Detectare automata a locatiei jocului GTA 3
-- Instalare usoara a modurilor din fisiere .zip
-- Dezinstalare moduri
-- Crearea copiilor de siguranta pentru fisierele jocului
-- Interfata usoara de utilizat
-- Lansarea jocului direct din aplicatie
-- Backup si restaurare completa a jocului
-- Gestionarea ordinii modurilor (prioritizare)
-- Scanare automata pentru a gasi instalari ale jocului
-- Optiuni configurabile (backup automat, minimizare la lansare)
-- Salvarea setarilor intre sesiuni
+- 🔍 Automatic detection of GTA installations
+- 📦 Easy installation of mods from ZIP files
+- 🗑️ Simple mod uninstallation
+- 💾 Automatic backup of important game files
+- 🚀 Launch games directly from the application
+- 🛡️ Complete game backup and restoration
+- 📊 Mod management with priority control
+- 🔄 Clean modern interface with multiple language support
+- 🌙 Sleek design with intuitive controls
 
-## Cerinte
+## 🖥️ System Requirements
 
 - Windows 7/8/10/11
-- .NET Framework 4.7.2 sau mai nou
-- GTA 3 instalat
+- .NET Framework 4.7.2 or newer
+- Any GTA game installed
 
-## Utilizare
+## 📋 How to Use
 
-1. Descarcati si rulati programul
-2. Programul va incerca sa gaseasca automat instalarea GTA 3
-3. Daca nu o gaseste automat, puteti:
-   - Apasati butonul "Browse..." pentru a selecta manual folderul de instalare GTA 3
-   - Sau apasati butonul "Settings" si apoi "Scan for additional install locations" pentru a cauta pe toate discurile
-4. Pentru a instala un mod:
-   - Apasati butonul "Install New Mod"
-   - Selectati fisierul .zip al modului
-   - Asteptati finalizarea instalarii
-5. Pentru a dezinstala un mod:
-   - Selectati modul din lista
-   - Apasati butonul "Uninstall Selected Mod"
-6. Pentru a schimba ordinea modurilor:
-   - Selectati modul din lista
-   - Utilizați butoanele săgeți ↑↓ pentru a schimba prioritatea
-7. Pentru a crea un backup complet:
-   - Apasati butonul "Create Backup"
-   - Selectati locatia unde doriti sa salvati backup-ul
-8. Pentru a restaura un backup:
-   - Apasati butonul "Restore Backup"
-   - Selectati fisierul de backup
-9. Pentru a lansa jocul:
-   - Apasati butonul "Launch GTA 3"
+1. Download and run the program
+2. The app will automatically try to find your GTA installations
+3. If not found automatically, you can:
+   - Click the "Browse..." button to manually select your GTA folder
+4. To install a mod:
+   - Click the "Install New Mod" button
+   - Select the mod's ZIP file
+   - Wait for installation to complete
+5. To uninstall a mod:
+   - Select the mod from the list
+   - Click the "Uninstall Selected Mod" button
+6. To launch the game:
+   - Click the "Launch GTA" button
 
-## Setari
+## 📷 Screenshots
 
-Pentru a configura programul, apasati butonul "Settings":
-- Puteti activa/dezactiva backup-ul automat inainte de instalarea modurilor
-- Puteti activa/dezactiva minimizarea automata a aplicatiei la lansarea jocului
-- Puteti scana pentru a gasi instalari ale jocului
+(Screenshots will be added soon)
 
-## Note importante
+## 🔧 Development
 
-- Programul creeaza automat copii de siguranta pentru fisierele importante ale jocului
-- Instalati modurile unul cate unul pentru a evita conflictele
-- Este posibil sa fie necesare drepturi de administrator pentru anumite operatiuni
-- Ordinea modurilor este importanta - modurile de la baza listei suprascriu pe cele de deasupra
+This project is developed in C# using Windows Forms. Contributions are welcome!
 
-## Compilare
+### Building from Source
 
-Pentru a compila proiectul, aveti nevoie de Visual Studio cu suport pentru dezvoltare .NET Desktop. Deschideti fisierul solutie (.sln) si compilati proiectul. 
+1. Clone the repository
+2. Open the solution in Visual Studio
+3. Build the project
+
+## 📝 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 👥 Contributors
+
+- REGE2K - Creator and maintainer
+
+## 🙏 Acknowledgments
+
+- Thanks to all the amazing modders in the GTA community
+- Special thanks to all contributors and users who provide feedback
+
+## 📧 Contact
+
+Create an issue in this repository for bug reports or feature requests. 
