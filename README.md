@@ -1,68 +1,56 @@
 # 🎮 GTA Mod Manager
 
-A powerful and user-friendly tool for managing mods for Grand Theft Auto games.
+A powerful and user-friendly application for managing mods for all Grand Theft Auto games!
 
 ## ✨ Features
 
-- 🔍 Automatic detection of GTA installations
-- 📦 Easy installation of mods from ZIP files
-- 🗑️ Simple mod uninstallation
-- 💾 Automatic backup of important game files
-- 🚀 Launch games directly from the application
-- 🛡️ Complete game backup and restoration
-- 📊 Mod management with priority control
-- 🔄 Clean modern interface with multiple language support
-- 🌙 Sleek design with intuitive controls
+- 🎮 **Support for all major GTA games:** GTA III, Vice City, San Andreas, GTA IV, GTA V, Liberty City Stories, and Vice City Stories
+- 🔍 **Automatic game detection:** Automatically locates your GTA installations
+- 📦 **Easy mod installation:** Install mods from .zip files with just a few clicks
+- 🗑️ **Simple uninstallation:** Remove mods without damaging your game files
+- 💾 **Automatic backups:** Creates backups of your game files for safety
+- 🌐 **Multiple language support:** English, Romanian, and Spanish interfaces
+- 🚀 **Smart launcher:** Detects Steam, Epic Games, or direct installation and launches accordingly
+- 🎨 **Clean modern interface:** Easy to use for beginners and advanced users alike
 
 ## 🖥️ System Requirements
 
 - Windows 7/8/10/11
 - .NET Framework 4.7.2 or newer
-- Any GTA game installed
+- Any GTA game installation
 
-## 📋 How to Use
+## 📖 Usage
 
-1. Download and run the program
-2. The app will automatically try to find your GTA installations
-3. If not found automatically, you can:
-   - Click the "Browse..." button to manually select your GTA folder
-4. To install a mod:
-   - Click the "Install New Mod" button
-   - Select the mod's ZIP file
-   - Wait for installation to complete
-5. To uninstall a mod:
-   - Select the mod from the list
-   - Click the "Uninstall Selected Mod" button
-6. To launch the game:
-   - Click the "Launch GTA" button
+1. Download and run GTA Mod Manager
+2. Select your GTA game from the dropdown menu
+3. The application will try to automatically detect your game installation
+4. If needed, use the "Browse" button to manually locate your game
+5. To install a mod:
+   - Click "Install New Mod"
+   - Select a mod .zip file
+   - The mod will be installed automatically
+6. To uninstall a mod:
+   - Select it from the list
+   - Click "Uninstall Selected Mod"
+7. To launch your game, click the "Launch" button
 
-## 📷 Screenshots
+## 🛠️ Development
 
-(Screenshots will be added soon)
-
-## 🔧 Development
-
-This project is developed in C# using Windows Forms. Contributions are welcome!
-
-### Building from Source
-
-1. Clone the repository
-2. Open the solution in Visual Studio
-3. Build the project
+This project is developed in C# using .NET Framework. Feel free to fork and contribute!
 
 ## 📝 License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License - see the LICENSE file for details.
 
 ## 👥 Contributors
 
-- REGE2K - Creator and maintainer
+- REGE2K - Creator and main developer
 
 ## 🙏 Acknowledgments
 
-- Thanks to all the amazing modders in the GTA community
-- Special thanks to all contributors and users who provide feedback
+- Thanks to the GTA modding community for their amazing work
+- All the helpful beta testers
 
-## 📧 Contact
+## 📞 Contact
 
-Create an issue in this repository for bug reports or feature requests. 
+- GitHub: [https://github.com/REGE2K](https://github.com/REGE2K) 
