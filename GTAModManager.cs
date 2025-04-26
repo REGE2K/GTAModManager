@@ -21,6 +21,18 @@ namespace GTAModManager
         Romanian,
         Spanish
     }
+    
+    // 🎮 Enum for GTA game selection
+    public enum GTAGame
+    {
+        GTA3,
+        ViceCity,
+        SanAndreas,
+        GTA4,
+        GTA5,
+        GTALibertyCityStories,
+        GTAViceCityStories
+    }
 
     public class Program
     {
@@ -46,6 +58,7 @@ namespace GTAModManager
         private FolderBrowserDialog folderBrowserDialog;
         private OpenFileDialog openFileDialog;
         private ComboBox languageComboBox;
+        private ComboBox gameSelectionComboBox; // 🎮 New ComboBox for game selection
         private Panel headerPanel;
 
         private string gtaPath = "";
@@ -53,7 +66,32 @@ namespace GTAModManager
         private List<string> installedMods = new List<string>();
         private bool MinimizeOnLaunch = false;
         private Language currentLanguage = Language.English;
-        private string appVersion = "1.2.0";
+        private GTAGame currentGame = GTAGame.GTA3; // 🎮 Default game selection
+        private string appVersion = "1.3.0";
+        
+        // Game executable names
+        private Dictionary<GTAGame, string> gameExecutables = new Dictionary<GTAGame, string>
+        {
+            { GTAGame.GTA3, "gta3.exe" },
+            { GTAGame.ViceCity, "gta-vc.exe" },
+            { GTAGame.SanAndreas, "gta_sa.exe" },
+            { GTAGame.GTA4, "GTAIV.exe" },
+            { GTAGame.GTA5, "GTA5.exe" },
+            { GTAGame.GTALibertyCityStories, "GTALCS.exe" },
+            { GTAGame.GTAViceCityStories, "GTAVCS.exe" }
+        };
+        
+        // Game icons for display in UI
+        private Dictionary<GTAGame, string> gameIcons = new Dictionary<GTAGame, string>
+        {
+            { GTAGame.GTA3, "🔷" },
+            { GTAGame.ViceCity, "🌴" },
+            { GTAGame.SanAndreas, "🏙️" },
+            { GTAGame.GTA4, "🏙️" },
+            { GTAGame.GTA5, "🌇" },
+            { GTAGame.GTALibertyCityStories, "🏢" },
+            { GTAGame.GTAViceCityStories, "🌆" }
+        };
         
         // Strings pentru mai multe limbi
         private Dictionary<string, Dictionary<Language, string>> translations = new Dictionary<string, Dictionary<Language, string>>();
@@ -94,18 +132,18 @@ namespace GTAModManager
         private void InitializeTranslations()
         {
             // Adăugăm traduceri pentru diverse texte din aplicație
-            translations["GTA 3 Mod Manager"] = new Dictionary<Language, string>
+            translations["GTA Mod Manager"] = new Dictionary<Language, string>
             {
-                { Language.English, "GTA 3 Mod Manager" },
-                { Language.Romanian, "Manager Moduri GTA 3" },
-                { Language.Spanish, "Administrador de Mods GTA 3" }
+                { Language.English, "GTA Mod Manager" },
+                { Language.Romanian, "Manager Moduri GTA" },
+                { Language.Spanish, "Administrador de Mods GTA" }
             };
             
-            translations["GTA 3 Installation Path:"] = new Dictionary<Language, string>
+            translations["GTA Installation Path:"] = new Dictionary<Language, string>
             {
-                { Language.English, "GTA 3 Installation Path:" },
-                { Language.Romanian, "Calea de instalare GTA 3:" },
-                { Language.Spanish, "Ruta de instalación de GTA 3:" }
+                { Language.English, "GTA Installation Path:" },
+                { Language.Romanian, "Calea de instalare GTA:" },
+                { Language.Spanish, "Ruta de instalación de GTA:" }
             };
             
             translations["Browse..."] = new Dictionary<Language, string>
@@ -136,11 +174,11 @@ namespace GTAModManager
                 { Language.Spanish, "Desinstalar Mod Seleccionado" }
             };
             
-            translations["Launch GTA 3"] = new Dictionary<Language, string>
+            translations["Launch GTA"] = new Dictionary<Language, string>
             {
-                { Language.English, "Launch GTA 3" },
-                { Language.Romanian, "Pornește GTA 3" },
-                { Language.Spanish, "Iniciar GTA 3" }
+                { Language.English, "Launch GTA" },
+                { Language.Romanian, "Pornește GTA" },
+                { Language.Spanish, "Iniciar GTA" }
             };
             
             translations["Ready"] = new Dictionary<Language, string>
@@ -155,6 +193,49 @@ namespace GTAModManager
                 { Language.English, "Language" },
                 { Language.Romanian, "Limba" },
                 { Language.Spanish, "Idioma" }
+            };
+            
+            translations["Game"] = new Dictionary<Language, string>
+            {
+                { Language.English, "Game" },
+                { Language.Romanian, "Joc" },
+                { Language.Spanish, "Juego" }
+            };
+            
+            // Game Names
+            translations["GTA III"] = new Dictionary<Language, string>
+            {
+                { Language.English, "GTA III" },
+                { Language.Romanian, "GTA III" },
+                { Language.Spanish, "GTA III" }
+            };
+            
+            translations["GTA Vice City"] = new Dictionary<Language, string>
+            {
+                { Language.English, "GTA Vice City" },
+                { Language.Romanian, "GTA Vice City" },
+                { Language.Spanish, "GTA Vice City" }
+            };
+            
+            translations["GTA San Andreas"] = new Dictionary<Language, string>
+            {
+                { Language.English, "GTA San Andreas" },
+                { Language.Romanian, "GTA San Andreas" },
+                { Language.Spanish, "GTA San Andreas" }
+            };
+            
+            translations["GTA IV"] = new Dictionary<Language, string>
+            {
+                { Language.English, "GTA IV" },
+                { Language.Romanian, "GTA IV" },
+                { Language.Spanish, "GTA IV" }
+            };
+            
+            translations["GTA V"] = new Dictionary<Language, string>
+            {
+                { Language.English, "GTA V" },
+                { Language.Romanian, "GTA V" },
+                { Language.Spanish, "GTA V" }
             };
             
             // Adaugă mai multe traduceri după nevoie
@@ -310,7 +391,7 @@ namespace GTAModManager
         private void InitializeComponents()
         {
             // Window setup
-            this.Text = GetTranslation("GTA 3 Mod Manager");
+            this.Text = GetTranslation("GTA Mod Manager");
             this.Size = new Size(700, 550);  // Înălțime mărită
             this.StartPosition = FormStartPosition.CenterScreen;
             this.Font = new Font("Segoe UI", 9F, FontStyle.Regular);
@@ -328,7 +409,7 @@ namespace GTAModManager
             // Title with professional font
             Label titleLabel = new Label
             {
-                Text = GetTranslation("GTA 3 Mod Manager"),
+                Text = GetTranslation("GTA Mod Manager"),
                 ForeColor = Color.White,
                 Font = new Font("Segoe UI", 22F, FontStyle.Bold),
                 Location = new Point(25, 15),
@@ -341,8 +422,8 @@ namespace GTAModManager
             languageComboBox = new ComboBox
             {
                 DropDownStyle = ComboBoxStyle.DropDownList,
-                Location = new Point(500, 22),
-                Size = new Size(120, 25),
+                Location = new Point(380, 18),
+                Size = new Size(100, 25),
                 FlatStyle = FlatStyle.Flat
             };
             languageComboBox.Items.Add("English");
@@ -356,11 +437,42 @@ namespace GTAModManager
             {
                 Text = GetTranslation("Language") + ":",
                 ForeColor = Color.White,
-                Location = new Point(420, 25),
-                Size = new Size(70, 20)
+                Location = new Point(320, 21),
+                Size = new Size(60, 20)
             };
             headerPanel.Controls.Add(langLabel);
-
+            
+            // Add game selection dropdown 🎮
+            gameSelectionComboBox = new ComboBox
+            {
+                DropDownStyle = ComboBoxStyle.DropDownList,
+                Location = new Point(200, 18),
+                Size = new Size(110, 25),
+                FlatStyle = FlatStyle.Flat
+            };
+            
+            // Add GTA game options
+            gameSelectionComboBox.Items.Add(gameIcons[GTAGame.GTA3] + " GTA III");
+            gameSelectionComboBox.Items.Add(gameIcons[GTAGame.ViceCity] + " GTA Vice City");
+            gameSelectionComboBox.Items.Add(gameIcons[GTAGame.SanAndreas] + " GTA San Andreas");
+            gameSelectionComboBox.Items.Add(gameIcons[GTAGame.GTA4] + " GTA IV");
+            gameSelectionComboBox.Items.Add(gameIcons[GTAGame.GTA5] + " GTA V");
+            gameSelectionComboBox.Items.Add(gameIcons[GTAGame.GTALibertyCityStories] + " GTA LCS");
+            gameSelectionComboBox.Items.Add(gameIcons[GTAGame.GTAViceCityStories] + " GTA VCS");
+            
+            gameSelectionComboBox.SelectedIndex = 0;
+            gameSelectionComboBox.SelectedIndexChanged += GameSelectionComboBox_SelectedIndexChanged;
+            headerPanel.Controls.Add(gameSelectionComboBox);
+            
+            Label gameLabel = new Label
+            {
+                Text = GetTranslation("Game") + ":",
+                ForeColor = Color.White,
+                Location = new Point(150, 21),
+                Size = new Size(50, 20)
+            };
+            headerPanel.Controls.Add(gameLabel);
+            
             // Help button with premium look
             aboutButton = new Button
             {
@@ -399,7 +511,7 @@ namespace GTAModManager
             // Section: GTA 3 Path with professional typography
             Label pathLabel = new Label
             {
-                Text = GetTranslation("GTA 3 Installation Path:"),
+                Text = GetTranslation("GTA Installation Path:"),
                 Location = new Point(padding, topMargin),
                 Size = new Size(250, 22),
                 Font = new Font("Segoe UI Semibold", 11F, FontStyle.Bold)
@@ -518,7 +630,7 @@ namespace GTAModManager
 
             launchGameButton = new Button
             {
-                Text = GetTranslation("Launch GTA 3"),
+                Text = GetTranslation("Launch GTA"),
                 Location = new Point(uninstallModButton.Right + 10, buttonY),
                 Size = new Size(buttonWidth, 40),
                 Font = new Font("Segoe UI", 10.5F, FontStyle.Bold),
@@ -539,13 +651,13 @@ namespace GTAModManager
 
             folderBrowserDialog = new FolderBrowserDialog
             {
-                Description = "Select GTA 3 Installation Folder"
+                Description = "Select GTA Installation Folder"
             };
 
             openFileDialog = new OpenFileDialog
             {
                 Filter = "Mod Files (*.zip)|*.zip|All files (*.*)|*.*",
-                Title = "Select a GTA 3 Mod to Install"
+                Title = "Select a GTA Mod to Install"
             };
 
             installedModsListBox.SelectedIndexChanged += (s, e) =>
@@ -582,12 +694,116 @@ namespace GTAModManager
             UpdateUITexts();
         }
         
+        private void GameSelectionComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            // Update current game based on selection
+            currentGame = (GTAGame)gameSelectionComboBox.SelectedIndex;
+            
+            // Update the mod path and installation path for the selected game
+            gtaPath = "";
+            gtaPathTextBox.Text = "";
+            
+            // Clear installed mods list
+            installedModsListBox.Items.Clear();
+            installedMods.Clear();
+            
+            // Find the game installation
+            FindGameInstallation(currentGame);
+            
+            // Update launch button text with game name
+            string gameName = gameSelectionComboBox.SelectedItem.ToString().Substring(2); // Remove emoji
+            launchGameButton.Text = $"{GetTranslation("Launch")} {gameName}";
+            
+            // Update status
+            statusLabel.Text = $"{gameIcons[currentGame]} {GetTranslation("Selected")} {gameName}";
+        }
+        
+        private void FindGameInstallation(GTAGame game)
+        {
+            // Get possible installation paths for the selected game
+            string[] possiblePaths = GetPossibleGamePaths(game);
+            
+            // Try to find the game in these paths
+            foreach (string path in possiblePaths)
+            {
+                string exeName = gameExecutables[game];
+                if (Directory.Exists(path) && File.Exists(Path.Combine(path, exeName)))
+                {
+                    gtaPath = path;
+                    gtaPathTextBox.Text = gtaPath;
+                    
+                    // Create/update mods directory
+                    modsPath = Path.Combine(gtaPath, "mods");
+                    if (!Directory.Exists(modsPath))
+                    {
+                        Directory.CreateDirectory(modsPath);
+                    }
+                    
+                    // Refresh the mods list
+                    RefreshModsList();
+                    
+                    statusLabel.Text = $"{gameIcons[game]} {GetTranslation("Game found at")} {gtaPath}";
+                    return;
+                }
+            }
+            
+            statusLabel.Text = $"{gameIcons[game]} {GetTranslation("Game not found, please select installation folder")}";
+        }
+        
+        private string[] GetPossibleGamePaths(GTAGame game)
+        {
+            List<string> paths = new List<string>();
+            
+            // Add Steam paths
+            string[] steamDrives = { @"C:", @"D:", @"E:", @"F:" };
+            foreach (string drive in steamDrives)
+            {
+                switch (game)
+                {
+                    case GTAGame.GTA3:
+                        paths.Add($@"{drive}\Program Files\Rockstar Games\Grand Theft Auto III");
+                        paths.Add($@"{drive}\Program Files (x86)\Rockstar Games\Grand Theft Auto III");
+                        paths.Add($@"{drive}\Program Files\Steam\steamapps\common\Grand Theft Auto 3");
+                        paths.Add($@"{drive}\Steam\steamapps\common\Grand Theft Auto 3");
+                        break;
+                    case GTAGame.ViceCity:
+                        paths.Add($@"{drive}\Program Files\Rockstar Games\Grand Theft Auto Vice City");
+                        paths.Add($@"{drive}\Program Files (x86)\Rockstar Games\Grand Theft Auto Vice City");
+                        paths.Add($@"{drive}\Program Files\Steam\steamapps\common\Grand Theft Auto Vice City");
+                        paths.Add($@"{drive}\Steam\steamapps\common\Grand Theft Auto Vice City");
+                        break;
+                    case GTAGame.SanAndreas:
+                        paths.Add($@"{drive}\Program Files\Rockstar Games\GTA San Andreas");
+                        paths.Add($@"{drive}\Program Files (x86)\Rockstar Games\GTA San Andreas");
+                        paths.Add($@"{drive}\Program Files\Steam\steamapps\common\Grand Theft Auto San Andreas");
+                        paths.Add($@"{drive}\Steam\steamapps\common\Grand Theft Auto San Andreas");
+                        break;
+                    case GTAGame.GTA4:
+                        paths.Add($@"{drive}\Program Files\Rockstar Games\Grand Theft Auto IV");
+                        paths.Add($@"{drive}\Program Files (x86)\Rockstar Games\Grand Theft Auto IV");
+                        paths.Add($@"{drive}\Program Files\Steam\steamapps\common\Grand Theft Auto IV");
+                        paths.Add($@"{drive}\Steam\steamapps\common\Grand Theft Auto IV");
+                        break;
+                    case GTAGame.GTA5:
+                        paths.Add($@"{drive}\Program Files\Rockstar Games\Grand Theft Auto V");
+                        paths.Add($@"{drive}\Program Files (x86)\Rockstar Games\Grand Theft Auto V");
+                        paths.Add($@"{drive}\Program Files\Epic Games\GTAV");
+                        paths.Add($@"{drive}\Program Files\Steam\steamapps\common\Grand Theft Auto V");
+                        paths.Add($@"{drive}\Steam\steamapps\common\Grand Theft Auto V");
+                        break;
+                    // Add paths for other games as needed
+                }
+            }
+            
+            return paths.ToArray();
+        }
+        
         private void UpdateUITexts()
         {
-            // Actualizăm textele pentru limba selectată
-            this.Text = GetTranslation("GTA 3 Mod Manager");
+            // Update window title
+            this.Text = GetTranslation("GTA Mod Manager");
             
-            // Actualizăm textele componentelor din interfață
+            // Update UI component texts
             foreach (Control control in this.Controls)
             {
                 if (control is Button button)
@@ -597,14 +813,19 @@ namespace GTAModManager
                     else if (button == uninstallModButton)
                         button.Text = GetTranslation("Uninstall Selected Mod");
                     else if (button == launchGameButton)
-                        button.Text = GetTranslation("Launch GTA 3");
+                    {
+                        // Update launch button with game name
+                        string gameName = gameSelectionComboBox.SelectedItem.ToString().Substring(2); // Remove emoji
+                        button.Text = $"{GetTranslation("Launch")} {gameName}";
+                    }
                     else if (button == browseButton)
                         button.Text = GetTranslation("Browse...");
                 }
                 else if (control is Label label)
                 {
-                    if (label.Text == "GTA 3 Installation Path:" || label.Text == "Calea de instalare GTA 3:" || label.Text == "Ruta de instalación de GTA 3:")
-                        label.Text = GetTranslation("GTA 3 Installation Path:");
+                    if (label.Text == "GTA 3 Installation Path:" || label.Text == "Calea de instalare GTA 3:" || label.Text == "Ruta de instalación de GTA 3:" ||
+                        label.Text == "GTA Installation Path:" || label.Text == "Calea de instalare GTA:" || label.Text == "Ruta de instalación de GTA:")
+                        label.Text = GetTranslation("GTA Installation Path:");
                     else if (label.Text == "Installed Mods:" || label.Text == "Moduri instalate:" || label.Text == "Mods instalados:")
                         label.Text = GetTranslation("Installed Mods:");
                     else if (label.Text == "Ready" || label.Text == "Gata" || label.Text == "Listo")
@@ -612,59 +833,50 @@ namespace GTAModManager
                 }
             }
             
-            // Actualizăm textele pentru headerPanel
+            // Update header panel texts
             foreach (Control control in headerPanel.Controls)
             {
-                if (control is Label label && control != languageComboBox)
+                if (control is Label label && control != languageComboBox && control != gameSelectionComboBox)
                 {
-                    if (label.Font.Size > 12) // Acesta este titlul
-                        label.Text = $"{GetTranslation("GTA 3 Mod Manager")} v{appVersion}";
+                    if (label.Font.Size > 12) // This is the title
+                        label.Text = GetTranslation("GTA Mod Manager");
                     else if (label.Text == "Language:" || label.Text == "Limba:" || label.Text == "Idioma:")
                         label.Text = GetTranslation("Language") + ":";
+                    else if (label.Text == "Game:" || label.Text == "Joc:" || label.Text == "Juego:")
+                        label.Text = GetTranslation("Game") + ":";
                 }
+            }
+            
+            // Update game selection combobox with translated game names and icons
+            if (gameSelectionComboBox != null)
+            {
+                gameSelectionComboBox.Items.Clear();
+                gameSelectionComboBox.Items.Add(gameIcons[GTAGame.GTA3] + " " + GetTranslation("GTA III"));
+                gameSelectionComboBox.Items.Add(gameIcons[GTAGame.ViceCity] + " " + GetTranslation("GTA Vice City"));
+                gameSelectionComboBox.Items.Add(gameIcons[GTAGame.SanAndreas] + " " + GetTranslation("GTA San Andreas"));
+                gameSelectionComboBox.Items.Add(gameIcons[GTAGame.GTA4] + " " + GetTranslation("GTA IV"));
+                gameSelectionComboBox.Items.Add(gameIcons[GTAGame.GTA5] + " " + GetTranslation("GTA V"));
+                gameSelectionComboBox.Items.Add(gameIcons[GTAGame.GTALibertyCityStories] + " " + "GTA LCS");
+                gameSelectionComboBox.Items.Add(gameIcons[GTAGame.GTAViceCityStories] + " " + "GTA VCS");
+                gameSelectionComboBox.SelectedIndex = (int)currentGame;
             }
         }
 
         private void LoadSettings()
         {
-            // Try to find GTA 3 installation path
-            string[] possiblePaths = new string[]
-            {
-                @"C:\Program Files\Rockstar Games\Grand Theft Auto III",
-                @"C:\Program Files (x86)\Rockstar Games\Grand Theft Auto III",
-                @"C:\Program Files\Steam\steamapps\common\Grand Theft Auto 3",
-                @"D:\Steam\steamapps\common\Grand Theft Auto 3",
-                @"E:\Steam\steamapps\common\Grand Theft Auto 3"
-            };
-
-            foreach (string path in possiblePaths)
-            {
-                if (Directory.Exists(path) && File.Exists(Path.Combine(path, "gta3.exe")))
-                {
-                    gtaPath = path;
-                    gtaPathTextBox.Text = gtaPath;
-                    break;
-                }
-            }
-
-            // Create mods directory if not exists
-            if (!string.IsNullOrEmpty(gtaPath))
-            {
-                modsPath = Path.Combine(gtaPath, "mods");
-                if (!Directory.Exists(modsPath))
-                {
-                    Directory.CreateDirectory(modsPath);
-                }
-                RefreshModsList();
-            }
+            // Find GTA installation based on currently selected game
+            FindGameInstallation(currentGame);
         }
 
         private void BrowseButton_Click(object sender, EventArgs e)
         {
+            string executableName = gameExecutables[currentGame];
+            folderBrowserDialog.Description = $"Select {gameSelectionComboBox.SelectedItem.ToString()} Installation Folder";
+            
             if (folderBrowserDialog.ShowDialog() == DialogResult.OK)
             {
                 string selectedPath = folderBrowserDialog.SelectedPath;
-                if (File.Exists(Path.Combine(selectedPath, "gta3.exe")))
+                if (File.Exists(Path.Combine(selectedPath, executableName)))
                 {
                     gtaPath = selectedPath;
                     gtaPathTextBox.Text = gtaPath;
@@ -675,11 +887,11 @@ namespace GTAModManager
                         Directory.CreateDirectory(modsPath);
                     }
                     RefreshModsList();
-                    statusLabel.Text = "GTA 3 installation found!";
+                    statusLabel.Text = $"{gameIcons[currentGame]} {GetTranslation("Game installation found!")}";
                 }
                 else
                 {
-                    MessageBox.Show("The selected folder doesn't contain GTA 3 (gta3.exe not found).", 
+                    MessageBox.Show($"The selected folder doesn't contain {gameSelectionComboBox.SelectedItem.ToString()} ({executableName} not found).", 
                         "Invalid Folder", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
@@ -687,16 +899,16 @@ namespace GTAModManager
 
         private void AboutButton_Click(object sender, EventArgs e)
         {
-            string aboutMessage = $"GTA 3 Mod Manager\n\nA tool to manage mods for Grand Theft Auto III.";
-            MessageBox.Show(aboutMessage, "About GTA 3 Mod Manager", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            string aboutMessage = $"GTA Mod Manager\n\nA tool to manage mods for GTA games.";
+            MessageBox.Show(aboutMessage, "About GTA Mod Manager", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         private void InstallModButton_Click(object sender, EventArgs e)
         {
             if (string.IsNullOrEmpty(gtaPath))
             {
-                MessageBox.Show("Please select your GTA 3 installation folder first.", 
-                    "GTA 3 Path Not Set", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Please select your GTA installation folder first.", 
+                    "GTA Path Not Set", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
@@ -959,31 +1171,55 @@ namespace GTAModManager
 
         private void LaunchGameButton_Click(object sender, EventArgs e)
         {
-            if (!string.IsNullOrEmpty(gtaPath) && File.Exists(Path.Combine(gtaPath, "gta3.exe")))
+            string executableName = gameExecutables[currentGame];
+            
+            if (!string.IsNullOrEmpty(gtaPath) && File.Exists(Path.Combine(gtaPath, executableName)))
             {
                 try
                 {
-                    // Verificăm dacă jocul este pe Steam
+                    // Check if game is Steam version
                     bool isSteamVersion = gtaPath.Contains("Steam") || gtaPath.Contains("steamapps");
                     
                     if (isSteamVersion)
                     {
-                        // Lansăm jocul prin protocolul Steam
-                        // Cod Steam App ID pentru GTA 3: 12100
-                        Process.Start("steam://run/12100");
-                        statusLabel.Text = "GTA 3 lansat prin Steam! Verificați Steam-ul.";
+                        // Launch through Steam protocol - steam appids
+                        Dictionary<GTAGame, string> steamAppIds = new Dictionary<GTAGame, string>
+                        {
+                            { GTAGame.GTA3, "12100" },
+                            { GTAGame.ViceCity, "12110" },
+                            { GTAGame.SanAndreas, "12120" },
+                            { GTAGame.GTA4, "12210" },
+                            { GTAGame.GTA5, "271590" }
+                        };
+                        
+                        string appId = steamAppIds.ContainsKey(currentGame) ? steamAppIds[currentGame] : "";
+                        if (!string.IsNullOrEmpty(appId))
+                        {
+                            Process.Start($"steam://run/{appId}");
+                            statusLabel.Text = $"{gameIcons[currentGame]} {GetTranslation("Game launched through Steam")}";
+                        }
+                        else
+                        {
+                            // Fallback to direct launch
+                            LaunchGameDirect();
+                        }
+                    }
+                    else if (gtaPath.Contains("Epic"))
+                    {
+                        // Launch Epic Games version (particularly for GTA 5)
+                        if (currentGame == GTAGame.GTA5)
+                        {
+                            Process.Start("com.epicgames.launcher://apps/9d2d0eb64d5c44529cece33fe2a46482?action=launch&silent=true");
+                            statusLabel.Text = $"{gameIcons[currentGame]} {GetTranslation("Game launched through Epic Games")}";
+                        }
+                        else
+                        {
+                            LaunchGameDirect();
+                        }
                     }
                     else
                     {
-                        // Lansare directă pentru versiunea non-Steam
-                        ProcessStartInfo startInfo = new ProcessStartInfo
-                        {
-                            FileName = Path.Combine(gtaPath, "gta3.exe"),
-                            WorkingDirectory = gtaPath,
-                            Arguments = "-nomipmap -refresh:60" // Argumente pentru stabilitate mai bună
-                        };
-                        Process.Start(startInfo);
-                        statusLabel.Text = "GTA 3 lansat cu succes!";
+                        LaunchGameDirect();
                     }
                     
                     if (MinimizeOnLaunch)
@@ -993,14 +1229,42 @@ namespace GTAModManager
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show($"Eroare la lansarea GTA 3: {ex.Message}", 
-                        "Eroare lansare", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show($"Error launching game: {ex.Message}", 
+                        "Launch Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
             else
             {
-                MessageBox.Show("Executabilul GTA 3 nu a fost găsit.", "Eroare", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"Game executable ({executableName}) not found.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+        
+        private void LaunchGameDirect()
+        {
+            string executableName = gameExecutables[currentGame];
+            
+            // Launch parameters specific to each game
+            Dictionary<GTAGame, string> launchParams = new Dictionary<GTAGame, string>
+            {
+                { GTAGame.GTA3, "-nomipmap -refresh:60" }, // GTA 3 specific params
+                { GTAGame.ViceCity, "-nomipmap -refresh:60" }, // Vice City specific params
+                { GTAGame.SanAndreas, "-skip" }, // San Andreas specific params
+                { GTAGame.GTA4, "" }, // GTA 4 specific params
+                { GTAGame.GTA5, "-StraightIntoFreemode" }, // GTA 5 specific params
+                { GTAGame.GTALibertyCityStories, "" },
+                { GTAGame.GTAViceCityStories, "" }
+            };
+            
+            string parameters = launchParams.ContainsKey(currentGame) ? launchParams[currentGame] : "";
+            
+            ProcessStartInfo startInfo = new ProcessStartInfo
+            {
+                FileName = Path.Combine(gtaPath, executableName),
+                WorkingDirectory = gtaPath,
+                Arguments = parameters
+            };
+            Process.Start(startInfo);
+            statusLabel.Text = $"{gameIcons[currentGame]} {GetTranslation("Game launched successfully!")}";
         }
 
         // Metodă pentru repararea jocului
